@@ -1,0 +1,27 @@
+import ClassifyManager
+import DetectionManager
+
+
+def main():
+    detction = DetectionManager.DetectionManager()
+    classify = ClassifyManager.ClassifyManager()
+    images_path = '/home/HwHiAiUser/img/'
+    for filename in os.listdir(images_path):
+        img, detection_list = detction.inference_from_file_resize(images_path + filename)
+        print('detection_list len:',len(detection_list))
+        detection_infos = detction.get_detectioninfo(img, detection_list)
+        for idx,image in enumerate(detection_infos.image_list):
+            if image is None:
+                print('image is None')
+                continue
+            else:
+                result = classify.inference_from_image(image)
+                print('result is None')
+                if not result:
+                    class_name = classify.get_class_name(result)
+                    print('inference result is:', class_name)
+        break
+
+
+if __name__ == '__main__':
+    main()
